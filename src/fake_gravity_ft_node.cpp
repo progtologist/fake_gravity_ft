@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
   force.vector.z = - gravity * mass;
   tf::Vector3 distance(0, distance_y, 0);
   listener.waitForTransform(target_frame,source_frame,ros::Time(0),ros::Duration(5));
+  ros::Rate r(100);
   while(ros::ok()) {
     geometry_msgs::Vector3Stamped force_tool, torque_tool;
     try {
@@ -76,6 +77,7 @@ int main(int argc, char **argv) {
     tf_torque = distance.cross(tf_force);
     tf::vector3TFToMsg(tf_torque, msg.wrench.torque);
     pub.publish(msg);
+    r.sleep();
   }
   return 0;
 }
